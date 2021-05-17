@@ -116,7 +116,7 @@ conky.config = {
 	own_window_argb_visual = true,				-- use ARGB - composite manager required
 	own_window_colour = '#000000',				-- set colour if own_window_transparent no
 	own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',  -- if own_window true - just hints - own_window_type sets it
-	own_window_transparent = false,				-- if own_window_argb_visual is true sets background opacity 0%
+	own_window_transparent = true,				-- if own_window_argb_visual is true sets background opacity 0%
 	own_window_title = 'system_conky',			-- set the name manually  - default conky "hostname"
 	own_window_type = 'normal',				-- if own_window true options are: normal/override/dock/desktop/panel
 
@@ -125,7 +125,7 @@ conky.config = {
 
 	default_color = '#D9DDE2',  				-- default color and border color
 	color1 = '#FF0000',
-	color2 = '#fafafa',
+	color2 = '#00ff41',
 	color3 = '#cccccc',
 	color4 = '#D9BC83',
 	color5 = '#c24844',
@@ -165,7 +165,6 @@ ${voffset 4}     1  -  ${top name 1}${alignr}${goto 170} ${goto 222}${top cpu 1}
      2  -  ${top name 2}${alignr} ${goto 222}${top cpu 2} ${goto 274}${top mem 2}
      3  -  ${top name 3}${alignr} ${goto 222}${top cpu 3} ${goto 274}${top mem 3}
      4  -  ${top name 4}${alignr} ${goto 222}${top cpu 4} ${goto 274}${top mem 4}
-     5  -  ${top name 5}${alignr} ${goto 222}${top cpu 5} ${goto 274}${top mem 5}
 ${color5}${font Roboto:size=10}M E M O R Y   ${hr 2}${font}${color}
 ${color2}${offset 30}RAM: ${color}${alignr}${offset -10}${mem} / ${memmax}${alignr}${membar}
 ${color2}${offset 30}Swap:${color} ${alignr}${offset -10}${swap} / ${swapmax}${alignr}${swapbar}
@@ -174,7 +173,6 @@ ${voffset 4}     1  -  ${top_mem name 1}${alignr}${goto 170} ${goto 222}${top_me
      2  -  ${top_mem name 2}${alignr}${goto 170} ${goto 222}${top_mem cpu 2} ${goto 274}${top_mem mem 2}
      3  -  ${top_mem name 3}${alignr}${goto 170} ${goto 222}${top_mem cpu 3} ${goto 274}${top_mem mem 3}
      4  -  ${top_mem name 4}${alignr}${goto 170} ${goto 222}${top_mem cpu 4} ${goto 274}${top_mem mem 4}
-     5  -  ${top_mem name 5}${alignr}${goto 170} ${goto 222}${top_mem cpu 5} ${goto 274}${top_mem mem 5}
 ${color5}${font Roboto:size=10}D R I V E S   ${hr 2}${font}${color}
 ${offset 30}${color2}Root  -  SSD:${color} ${alignr}${offset -10}${fs_used /} / ${fs_size /}${alignr}${fs_bar}
 ${offset 30}${color2}I/O Read:${color} ${alignr}${offset -10}${diskio_read /dev/sda5}${alignr}${diskiograph_read sda5 8,100}
@@ -184,6 +182,9 @@ ${color5}${color5}${font Roboto:size=10}N E T W O R K   ${hr 2}${font}${color}
 ${color2}${offset 30}IP Address: ${color} ${alignr}${offset -10$}${addrs wlp3s0}
 ${color2}${offset 30}Eth Up:${color} ${alignr}${offset -10$}${upspeed wlp3s0}${alignr}${upspeedgraph wlp3s0 8,100}
 ${color2}${offset 30}Eth Down:${color} ${alignr}${offset -10$}${downspeed wlp3s0}${alignr}${downspeedgraph wlp3s0 8,100}
+${color}${goto 5}Today ${goto 100}Yesterday ${goto 225}Week ${goto 325}Month ${color2}
+${execi 300 vnstat -i wlp3s0 | grep "today" | awk '{print $8" "substr ($9, 1, 1)}'} ${goto 110}${execi 300 vnstat -i wlp3s0 | grep "yesterday" | awk '{print $8" "substr ($9, 1, 1)}'} ${goto 220}${execi 300 vnstat -i wlp3s0 -w | grep "current week" | awk '{print $9" "substr ($10, 1, 1)}'} ${goto 315}${execi 300 vnstat -i wlp3s0 -m | grep "`date +"%b '%y"`" | awk '{print $9" "substr ($10, 1, 1)}'}
+
 #${font Roboto:size=10}N V I D I A   ${hr 2}${font}
 #${font Roboto:size=10,weight:bold}${color5}${execp  nvidia-smi --query-supported-clocks=gpu_name --format=csv,noheader}${font}
 #${font StyleBats:size=20}u${font}${offset 8}${voffset -12}GPU Temp ${alignr}${execi 60 nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader} °C
